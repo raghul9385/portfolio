@@ -17,7 +17,7 @@ export const profile = {
   dailyStack: 'React · React Native · .NET',
   email: 'raghulbabuj@gmail.com',
   linkedin: 'https://www.linkedin.com/in/raghul-babu/',
-  github: 'https://github.com/raghul-babu', // e.g. 'https://github.com/your-username'
+  github: 'https://github.com/raghul9385',
   // Your number in international format, digits only (e.g. '919442987687').
   // Leave null and the WhatsApp button explains what to add.
   whatsapp: 960084309,
@@ -26,7 +26,7 @@ export const profile = {
 
 export const socials = [
   { label: 'LinkedIn', meta: 'in/raghul-babu', href: 'https://www.linkedin.com/in/raghul-babu/' },
-  { label: 'GitHub', meta: '@raghul-babu', href: 'https://github.com/raghul-babu', placeholder: 'Add your GitHub profile URL' },
+  { label: 'GitHub', meta: '@raghul9385', href: 'https://github.com/raghul9385' },
   { label: 'Email', meta: 'direct', href: `mailto:${profile.email}`, cursor: 'Write' },
   { label: 'Résumé', meta: 'PDF', href: profile.resume, placeholder: 'Add your résumé PDF link' },
 ];
