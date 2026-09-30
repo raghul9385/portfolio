@@ -1,0 +1,19 @@
+{
+  "name": "raghul-portfolio-contact-api",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Contact endpoint for the portfolio: delivers form submissions to email and WhatsApp.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "node --watch index.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^17.0.0",
+    "express": "^5.1.0",
+    "express-rate-limit": "^8.0.0",
+    "nodemailer": "^10.0.13"
+  }
+}
