@@ -20,8 +20,8 @@ const QA = [
     a: () => `${experience[0].role} at ${experience[0].org}, ${experience[0].dates.toLowerCase()}. ${experience[0].summary}`,
   },
   {
-    q: 'Is he available?',
-    a: () => `${profile.availability}. Based in ${profile.location}. The fastest route is ${profile.email} — he replies within a working day.`,
+    q: profile.availability ? 'Is he available?' : 'How do I reach him?',
+    a: () => `${profile.availability ? `${profile.availability}. ` : ''}Based in ${profile.location}. The fastest route is ${profile.email} — he replies within a working day.`,
   },
   {
     q: 'How does he work?',
@@ -74,7 +74,7 @@ export default function AskPanel() {
   }, [answer, reduce]);
 
   return (
-    <div className="sheen edge-glow group relative overflow-hidden rounded-2xl border border-line bg-ink-2/85">
+    <div className="group relative overflow-hidden rounded-2xl border border-line bg-ink-2/85">
       <Brackets />
       <header className="flex flex-wrap items-center gap-3 border-b border-line px-5 py-3">
         <span className="flex items-center gap-2 label-mono uppercase tracking-[.16em] text-surf">
@@ -82,7 +82,7 @@ export default function AskPanel() {
         </span>
         <span className="label-mono text-dim">scripted answers · built from this page’s data, not a live model</span>
         <motion.span aria-hidden="true" className="ml-auto size-1.5 rounded-full bg-surf"
-          animate={reduce ? undefined : { opacity: [0.3, 1, 0.3] }} transition={{ duration: 2, repeat: Infinity }} />
+          />
       </header>
 
       <div className="grid gap-5 p-5 md:grid-cols-[minmax(0,260px)_1fr] md:p-6">

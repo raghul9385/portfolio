@@ -1,6 +1,6 @@
 # Raghul Babu J — portfolio
 
-React portfolio with a 3D hero, plus a small backend that delivers contact-form
+React portfolio (Vite, Tailwind CSS, Motion), plus a small backend that delivers contact-form
 messages to **email and WhatsApp**.
 
 ```
@@ -24,9 +24,8 @@ npm run dev          # http://localhost:5173
 | `npm run preview` | serve the production build locally |
 | `npm run server` | start the contact API |
 
-The 3D scene is a separate chunk. It is only downloaded on screens ≥900px with
-at least 4 CPU cores and 4 GB of memory, after the page has painted and the
-browser is idle — so the text never waits for it.
+Motion is kept to short fade-ins and hover states; there is no WebGL, custom
+cursor or scroll hijacking, so the page stays light on low-end laptops and phones.
 
 ## Edit your content
 

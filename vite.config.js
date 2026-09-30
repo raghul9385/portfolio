@@ -4,10 +4,9 @@ import tailwindcss from '@tailwindcss/vite';
 import { viteSingleFile } from 'vite-plugin-singlefile';
 
 /**
- * `npm run build`        → split build: small HTML plus chunks, so the page
- *                          paints before the 3D bundle is even requested.
+ * `npm run build`        → split build: small HTML plus a separate vendor chunk.
  * `npm run build:single` → everything inlined into one dist/index.html
- *                          (useful for previews, slower to first paint).
+ *                          (useful for previews).
  */
 export default defineConfig(() => {
   const single = process.env.SINGLE_FILE === '1';
@@ -24,16 +23,13 @@ export default defineConfig(() => {
     build: {
       target: 'es2020',
       cssCodeSplit: !single,
-      // Never preload the 3D chunk — it must not compete with the first paint.
-      modulePreload: single ? undefined : { resolveDependencies: (_url, deps) => deps.filter((d) => !/three|Scene3D/.test(d)) },
       rollupOptions: single
         ? {}
         : {
             output: {
               manualChunks(id) {
                 if (!id.includes('node_modules')) return undefined;
-                if (/three|@react-three|postprocessing/.test(id)) return 'three';
-                if (/react|scheduler|motion|lenis/.test(id)) return 'vendor';
+                if (/react|scheduler|motion/.test(id)) return 'vendor';
                 return undefined;
               },
             },

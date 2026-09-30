@@ -1,4 +1,3 @@
-import { useLenis } from 'lenis/react';
 import { AnimatePresence, motion, useMotionValueEvent, useScroll, useSpring } from 'motion/react';
 import { useEffect, useRef, useState } from 'react';
 import { profile } from '../data.js';
@@ -6,8 +5,7 @@ import { openResume } from '../resume.js';
 import { EASE, useToast } from '../hooks.js';
 import { ArrowDownToLine } from 'lucide-react';
 import Logo from './Logo.jsx';
-import ThemeSwitch from './ThemeSwitch.jsx';
-import { Button, Magnetic, SmartLink } from './ui.jsx';
+import { Button } from './ui.jsx';
 
 const SECTIONS = ['about', 'skills', 'ask', 'work', 'experience', 'contact'];
 const label = (id) => id[0].toUpperCase() + id.slice(1);
@@ -23,8 +21,7 @@ function RollText({ children }) {
   );
 }
 
-export default function Nav({ palette, onPalette }) {
-  const lenis = useLenis();
+export default function Nav() {
   const toast = useToast();
   const getResume = () => {
     if (!openResume()) toast("Allow pop-ups to open your résumé");
@@ -52,13 +49,12 @@ export default function Nav({ palette, onPalette }) {
   }, []);
 
   useEffect(() => {
-    if (open) lenis?.stop(); else lenis?.start();
     document.body.style.overflow = open ? 'hidden' : '';
     if (!open) return;
     const onKey = (e) => { if (e.key === 'Escape') { setOpen(false); menuBtn.current?.focus(); } };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [open, lenis]);
+  }, [open]);
 
   const resume = { href: profile.resume, placeholder: 'Add your résumé PDF link' };
 
@@ -73,7 +69,7 @@ export default function Nav({ palette, onPalette }) {
       >
         <div className="wrap flex h-17 items-center justify-between gap-6">
           <a href="#top" className="group flex items-center gap-3 font-mono text-sm no-underline" aria-label={`${profile.firstName} ${profile.lastName}, back to top`}>
-            <Logo size={44} tagline={false} title="" className="shrink-0 text-surf transition duration-700 ease-expo group-hover:rotate-[-12deg] group-hover:scale-110" />
+            <Logo size={44} tagline={false} title="" className="shrink-0 text-surf" />
             <span className="hidden text-muted sm:inline">~/<b className="font-medium text-paper">{profile.handle}</b></span>
           </a>
 
@@ -85,15 +81,13 @@ export default function Nav({ palette, onPalette }) {
                 {active === id && <motion.span layoutId="nav-dot" className="absolute bottom-0.5 left-1/2 -ml-0.5 size-1 rounded-full bg-surf" />}
               </a>
             ))}
-            <ThemeSwitch palette={palette} onChange={onPalette} className="ml-2" />
-            <Magnetic className="ml-3 inline-block">
+            <div className="ml-3">
               {resume.href
                 ? <Button size="sm" href={resume.href} download>Résumé <ArrowDownToLine size={15} /></Button>
                 : <Button size="sm" onClick={getResume}>Résumé <ArrowDownToLine size={15} className="transition-transform duration-500 ease-expo group-hover:translate-y-0.5" /></Button>}
-            </Magnetic>
+            </div>
           </div>
 
-          <ThemeSwitch palette={palette} onChange={onPalette} className="mr-2 lg:hidden" />
           <button ref={menuBtn} type="button" aria-expanded={open} aria-controls="mobileMenu" aria-label={open ? 'Close menu' : 'Open menu'}
             onClick={() => setOpen((o) => !o)}
             className="relative z-[70] size-11 cursor-pointer rounded-full border border-line-2 bg-transparent text-paper lg:hidden">
@@ -110,18 +104,17 @@ export default function Nav({ palette, onPalette }) {
             initial={{ clipPath: 'circle(0% at 94% 4%)' }}
             animate={{ clipPath: 'circle(150% at 94% 4%)' }}
             exit={{ clipPath: 'circle(0% at 94% 4%)' }}
-            transition={{ duration: 0.7, ease: EASE }}
+            transition={{ duration: 0.4, ease: EASE }}
             className="fixed inset-0 z-[45] flex flex-col gap-2 bg-ink px-[clamp(16px,4vw,48px)] pb-12 pt-[calc(96px+env(safe-area-inset-top,0px))]"
           >
             {SECTIONS.map((id, i) => (
               <motion.a key={id} href={`#${id}`} onClick={() => setOpen(false)}
-                initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 + i * 0.06, duration: 0.6, ease: EASE }}
+                initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.04, duration: 0.35, ease: EASE }}
                 className="flex items-baseline gap-3 font-display text-[clamp(2.5rem,12vw,4rem)] font-semibold leading-tight tracking-tight no-underline">
                 <small className="label-mono text-surf">/{id}</small>{label(id)}
               </motion.a>
             ))}
             <div className="mt-auto grid gap-4">
-              <ThemeSwitch palette={palette} onChange={onPalette} className="w-fit" />
               <p className="label-mono text-muted">{profile.email}</p>
             </div>
           </motion.div>

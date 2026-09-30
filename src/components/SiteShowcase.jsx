@@ -47,7 +47,7 @@ export default function SiteShowcase() {
         onBlurCapture={() => setPaused(false)}
       >
         {/* preview */}
-        <Reveal className="overflow-hidden rounded-2xl border border-line bg-ink-2/92 shadow-[0_40px_80px_-40px_rgb(4_24_42/0.9)]">
+        <Reveal className="overflow-hidden rounded-2xl border border-line bg-ink-2/92 shadow-[0_40px_80px_-40px_rgb(0_0_0/0.8)]">
           <div className="flex items-center gap-1.5 border-b border-line bg-ink px-3 py-2.5">
             {[0, 1, 2].map((i) => <i key={i} className="size-2 rounded-full bg-line-2" />)}
             <AnimatePresence mode="wait">
@@ -61,16 +61,16 @@ export default function SiteShowcase() {
             <AnimatePresence mode="wait">
               <motion.img
                 key={active.shot} src={image} alt={`${active.name} home page, first screen`} loading="lazy"
-                initial={{ opacity: 0, scale: 1.07, filter: 'blur(8px)' }}
-                animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
-                exit={{ opacity: 0, scale: 1.02, filter: 'blur(6px)' }}
-                transition={{ duration: 0.75, ease: EASE }}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.3, ease: EASE }}
                 className="absolute inset-0 size-full object-cover object-top"
               />
             </AnimatePresence>
             <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink/70 via-transparent to-transparent" />
-            <a href={active.href} target="_blank" rel="noopener" data-cursor="Visit"
-              className="absolute bottom-4 right-4 inline-flex items-center gap-2 rounded-full bg-surf px-4 py-2.5 text-sm font-semibold text-surf-ink no-underline transition-transform duration-500 ease-expo hover:scale-105">
+            <a href={active.href} target="_blank" rel="noopener"
+              className="absolute bottom-4 right-4 inline-flex items-center gap-2 rounded-full bg-surf px-4 py-2.5 text-sm font-semibold text-surf-ink no-underline transition-colors duration-300 hover:bg-surf-2">
               Visit live site <ArrowUpRight size={15} />
             </a>
           </div>
@@ -82,16 +82,11 @@ export default function SiteShowcase() {
               </motion.p>
             </AnimatePresence>
             <ul className="flex flex-wrap gap-1.5" aria-label={`Technologies used on ${active.name}`}>
-              <AnimatePresence mode="popLayout">
-                {active.tech.map((t, i) => (
-                  <motion.li key={`${active.name}-${t}`} layout
-                    initial={{ opacity: 0, y: 10, scale: 0.9 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, scale: 0.9 }}
-                    transition={{ delay: i * 0.04, duration: 0.35, ease: EASE }}
-                    className="rounded-md border border-line bg-ink-3 px-2.5 py-1.5 font-mono text-[11px] leading-none text-muted">
-                    {t}
-                  </motion.li>
-                ))}
-              </AnimatePresence>
+              {active.tech.map((t) => (
+                <li key={`${active.name}-${t}`} className="rounded-md border border-line bg-ink-3 px-2.5 py-1.5 font-mono text-[11px] leading-none text-muted">
+                  {t}
+                </li>
+              ))}
             </ul>
           </div>
         </Reveal>

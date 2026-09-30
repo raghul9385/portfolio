@@ -3,9 +3,9 @@ import { ArrowRight, Copy, MessageCircle, Send } from 'lucide-react';
 import { useState } from 'react';
 import { profile, socials } from '../data.js';
 import { openResume } from '../resume.js';
-import { EASE, usePalette, useToast } from '../hooks.js';
+import { EASE, useToast } from '../hooks.js';
 import Logo from './Logo.jsx';
-import { Button, Magnetic, Reveal, Scramble, SmartLink } from './ui.jsx';
+import { Button, Reveal, SmartLink } from './ui.jsx';
 
 const TYPES = ['Full-time role', 'Contract project', 'Freelance build', 'Just saying hi'];
 const EMPTY = { name: '', email: '', type: TYPES[0], message: '', company: '' };
@@ -16,12 +16,11 @@ const CONTACT_API = import.meta.env.VITE_CONTACT_API || '/api/contact';
 
 const mailtoFor = ({ name, email, type, message }, to) =>
   `mailto:${to}?subject=${encodeURIComponent(`[${type}] from ${name}`)}&body=${encodeURIComponent(`${message}\n\n— ${name}\n${email}`)}`;
-const FIELD = 'w-full rounded-md border border-line-2 bg-ink px-3.5 py-3 text-paper placeholder:text-dim transition focus:border-surf focus:shadow-[0_0_0_3px_rgb(63_224_200/0.25)] focus:outline-none';
+const FIELD = 'w-full rounded-md border border-line-2 bg-ink px-3.5 py-3 text-paper placeholder:text-dim transition focus:border-surf focus:shadow-[0_0_0_3px_color-mix(in_oklab,var(--color-surf)_25%,transparent)] focus:outline-none';
 const LABEL = 'label-mono font-medium uppercase text-muted';
 
 export default function Contact() {
   const toast = useToast();
-  const palette = usePalette();
   const [form, setForm] = useState(EMPTY);
   const [hint, setHint] = useState({ text: 'Goes straight to my inbox', error: false });
   const [sending, setSending] = useState(false);
@@ -91,23 +90,21 @@ export default function Contact() {
 
   return (
     <footer id="contact" aria-labelledby="contact-title" className="relative overflow-hidden border-t border-line pt-20 md:pt-32">
-      <div aria-hidden="true" className="pointer-events-none absolute -top-[30%] left-1/2 size-[900px] max-w-[140vw] -translate-x-1/2 rounded-full bg-[radial-gradient(closest-side,rgb(63_224_200/0.12),transparent)]" />
+      <div aria-hidden="true" className="pointer-events-none absolute -top-[30%] left-1/2 size-[900px] max-w-[140vw] -translate-x-1/2 rounded-full bg-[radial-gradient(closest-side,color-mix(in_oklab,var(--color-glow)_16%,transparent),transparent)]" />
       <div className="wrap relative">
         <div className="grid gap-6">
           <p className="label-mono flex items-center gap-3 text-surf before:h-px before:w-7 before:bg-current">/contact</p>
           <h2 id="contact-title" className="max-w-[14ch] text-[clamp(2.75rem,9vw,7.5rem)] font-semibold leading-[.92] tracking-[-.045em]">
-            <Scramble text="Got something that needs to" /> <span className="text-surf"><Scramble text="ship?" /></span>
+            Got something that needs to <span className="text-surf">ship?</span>
           </h2>
           <p className="max-w-[52ch] text-muted">
             I reply within one working day. The best first message says what you're building, the rough timeline, and what's currently in the way.
           </p>
           <div className="flex max-w-full flex-wrap items-center gap-4">
-            <Magnetic strength={0.2}>
               <a href={`mailto:${profile.email}`}
                 className="bg-[linear-gradient(var(--color-surf),var(--color-surf))] bg-[length:0_2px] bg-left-bottom bg-no-repeat pb-1 font-display text-[clamp(1.25rem,3.6vw,2.5rem)] font-medium tracking-tight [overflow-wrap:anywhere] no-underline transition-[background-size,color] duration-700 ease-expo hover:bg-[length:100%_2px] hover:text-surf-2 focus-visible:bg-[length:100%_2px]">
                 {profile.email}
               </a>
-            </Magnetic>
             <button type="button" onClick={copy} aria-label="Copy email address"
               className="label-mono inline-flex cursor-pointer items-center gap-1.5 rounded-full border border-line-2 bg-transparent px-3.5 py-2 text-muted transition-colors hover:border-surf hover:text-surf">
               <Copy size={12} />Copy
@@ -118,7 +115,7 @@ export default function Contact() {
         <div className="mt-18 grid gap-12 lg:grid-cols-[1fr_1.2fr] lg:gap-18">
           <Reveal className="grid content-start border-t border-line">
             {socials.map((s) => (s.label === 'Résumé' && !s.href ? (
-              <button key={s.label} type="button" onClick={getResume} data-cursor="Build"
+              <button key={s.label} type="button" onClick={getResume}
                 className="group flex cursor-pointer items-center justify-between gap-4 border-b border-line bg-transparent py-4 text-left font-display text-[1.625rem] font-medium text-paper transition-[padding,color] duration-500 ease-expo hover:px-3 hover:text-surf focus-visible:px-3">
                 Résumé
                 <span className="label-mono flex items-center gap-2 text-dim">
@@ -126,7 +123,7 @@ export default function Contact() {
                 </span>
               </button>
             ) : (
-              <SmartLink key={s.label} href={s.href} placeholder={s.placeholder} data-cursor={s.cursor || 'Open'}
+              <SmartLink key={s.label} href={s.href} placeholder={s.placeholder}
                 className="group flex items-center justify-between gap-4 border-b border-line py-4 font-display text-[1.625rem] font-medium no-underline transition-[padding,color] duration-500 ease-expo hover:px-3 hover:text-surf focus-visible:px-3">
                 {s.label}
                 <span className="label-mono flex items-center gap-2 text-dim">
@@ -184,25 +181,16 @@ export default function Contact() {
           </Reveal>
         </div>
 
-        <div className="mt-24 flex justify-center">
-          <motion.div whileHover={{ rotate: 8, scale: 1.04 }} transition={{ type: 'spring', stiffness: 200, damping: 12 }}>
-            <Logo draw size={260} className="h-auto w-[min(260px,60vw)] text-surf drop-shadow-[0_0_40px_rgb(63_224_200/0.22)]" />
-          </motion.div>
-        </div>
+        <Reveal className="mt-24 grid justify-items-center gap-3 text-center">
+          <p aria-hidden="true" className="arise select-none whitespace-nowrap font-display text-[clamp(4rem,15vw,12rem)] font-extrabold leading-[.85] tracking-[.02em]">{profile.firstName.toUpperCase()}</p>
+          <p className="label-mono uppercase tracking-[.3em] text-dim"><span className="text-surf">⟪ Arise ⟫</span> · Every level earned, one shipped app at a time.</p>
+        </Reveal>
 
-        <motion.div aria-hidden="true" initial={{ opacity: 0, y: 80 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 1.2, ease: EASE }}
-          className="text-outline mt-18 select-none whitespace-nowrap text-center font-display text-[clamp(4rem,19vw,17rem)] font-extrabold leading-[.8] tracking-[-.06em] transition-[-webkit-text-stroke-color] duration-500 hover:[-webkit-text-stroke-color:var(--color-surf)]">
-          {profile.firstName.toUpperCase()}
-        </motion.div>
-
-        {palette === 'monarch' && (
-          <motion.p aria-hidden="true" initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ duration: 1 }}
-            className="label-mono -mt-4 text-center uppercase tracking-[.42em] text-surf/70">
-            ⟪ arise ⟫
-          </motion.p>
-        )}
-        <div className="label-mono mt-18 flex flex-wrap justify-between gap-4 border-t border-line pb-8 pt-6 text-dim">
-          <span>© {new Date().getFullYear()} {profile.firstName} {profile.lastName} · React, Tailwind CSS, Motion &amp; Lenis</span>
+        <div className="label-mono mt-16 flex flex-wrap items-center justify-between gap-4 border-t border-line pb-8 pt-6 text-dim">
+          <span className="flex items-center gap-3">
+            <Logo size={28} tagline={false} title="" className="text-surf" />
+            © {new Date().getFullYear()} {profile.firstName} {profile.lastName}
+          </span>
           <a href="#top" className="text-muted no-underline hover:text-surf">Back to top ↑</a>
         </div>
       </div>

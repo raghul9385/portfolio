@@ -11,22 +11,24 @@ export const profile = {
   rotatingWords: ['smooth mobile apps', 'web experiences', 'clean interfaces', 'scalable back ends'],
   lede:
     'UI engineer and Software Developer at Cennest Technologies. I build fast, reliable web and mobile products with React, React Native and ASP.NET, from the SQL Server schema to the last screen transition.',
-  availability: 'Open to work · on-site, hybrid, remote',
+  //availability: 'Open to work · on-site, hybrid, remote',
   location: 'Nagercoil, Tamil Nadu',
   timeZone: 'Asia/Kolkata',
   dailyStack: 'React · React Native · .NET',
   email: 'raghulbabuj@gmail.com',
   linkedin: 'https://www.linkedin.com/in/raghul-babu/',
   github: 'https://github.com/raghul9385',
+  instagram: 'https://www.instagram.com/raghul_babu_j/',
   // Your number in international format, digits only (e.g. '919442987687').
   // Leave null and the WhatsApp button explains what to add.
-  whatsapp: 9600843709,
+  whatsapp: '919600843709',
   resume: null, // e.g. '/raghul-babu-resume.pdf' (file in /public)
 };
 
 export const socials = [
   { label: 'LinkedIn', meta: 'in/raghul-babu', href: 'https://www.linkedin.com/in/raghul-babu/' },
   { label: 'GitHub', meta: '@raghul9385', href: 'https://github.com/raghul9385' },
+  { label: 'Instagram', meta: '@raghul_babu_j', href: 'https://www.instagram.com/raghul_babu_j/' },
   { label: 'Email', meta: 'direct', href: `mailto:${profile.email}`, cursor: 'Write' },
   { label: 'Résumé', meta: 'PDF', href: profile.resume, placeholder: 'Add your résumé PDF link' },
 ];
@@ -68,7 +70,7 @@ export const projects = [
     problem: "An organic herbs and botanicals retailer needed a native shopping app that stays fast and dependable, even on a patchy connection.",
     role: "React Native app developer. I created the app UI: screens, reusable components and the theme system, connected to the store API.",
     result: "Full storefront app: shop, search, cart, wishlist, loyalty, gifts and checkout, with offline support and push notifications.",
-    tech: ["React Native", "Expo Router", "TypeScript", "Redux Toolkit", "Reanimated", "SQLite", "Firebase", "BigCommerce", "Azure Functions", "Jest", "Maestro"],
+    tech: ["React Native", "Expo Router", "TypeScript", "Redux Toolkit", "Reanimated",  "BigCommerce"],
     links: [{ label: "mountainroseherbs.com ↗", href: "https://mountainroseherbs.com/" }],
   },
   {
@@ -113,7 +115,7 @@ export const websites = [
 // Add real dates and bullet points where you have them.
 export const experience = [
   {
-    hash: 'HEAD → a3f9c21', dates: 'Jun 2024 — Present', role: 'Software Developer', org: 'Cennest Technologies',
+   dates: 'Jun 2024 — Present', role: 'Software Developer', org: 'Cennest Technologies',
     summary: 'Full-time · Remote. Building scalable, high-performance web and mobile applications with React, React Native and ASP.NET.',
     points: [
       'Mountain Rose Herbs: React Native app developer. Created the UI for the storefront app (Expo, TypeScript, Redux Toolkit): shop, search, cart, wishlist, loyalty and checkout.',
@@ -122,7 +124,7 @@ export const experience = [
           ],
   },
   {
-    hash: '9d2b7e4', dates: '2023 — 2024', role: 'Web Developer', org: 'Wikpolt Softwares',
+    dates: '2023 — 2024', role: 'Web Developer', org: 'Wikpolt Softwares',
     summary: 'Based in Nagercoil. Built and shipped client websites for businesses and academic-services brands, from first layout to live launch.',
     points: [
       'Delivered websites for Zonduo, Help for Thesis, Precise Global Technologies and eFurm Solution, plus the company site.',
@@ -130,8 +132,8 @@ export const experience = [
     ],
   },
   {
-    hash: 'init 0f00d1e', dates: 'Jun 2020 — Jun 2023', role: 'BE, Computer Science', org: "Stella Mary's College of Engineering",
-    summary: 'Bachelor of Engineering in Computer Science. The foundation I built on for full-stack web and mobile development.',
+     dates: 'Jun 2020 — Jun 2023', role: 'BE, Computer Science and Engineering', org: "Stella Mary's College of Engineering", university: 'Anna University', grade: 'CGPA 7.85',
+    summary: 'Bachelor of Engineering in Computer Science and Engineering, Anna University, with a CGPA of 7.85. The foundation I built on for full-stack web and mobile development.',
     points: [],
   },
 ];

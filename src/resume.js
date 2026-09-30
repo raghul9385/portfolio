@@ -64,7 +64,7 @@ export function buildResumeHTML() {
     .join('');
 
   const eduBlock = experience.filter(isEdu)
-    .map((e) => `<div class="edu"><h4>${esc(e.role)}</h4><p>${esc(e.org)}</p><time>${esc(e.dates)}</time></div>`)
+    .map((e) => `<div class="edu"><h4>${esc(e.role)}</h4><p>${esc(e.org)}${e.university ? ` · ${esc(e.university)}` : ''}</p><time>${esc(e.dates)}${e.grade ? ` · ${esc(e.grade)}` : ''}</time></div>`)
     .join('');
 
   return `<!doctype html>

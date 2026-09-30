@@ -1,12 +1,23 @@
-import { motion, useMotionTemplate, useMotionValue, useReducedMotion, useScroll, useSpring, useTransform } from 'motion/react';
+import { motion, useScroll, useSpring } from 'motion/react';
 import { ArrowUpRight, Check, Search, ShieldCheck, WifiOff } from 'lucide-react';
 import { useRef } from 'react';
-import { about, experience, projects, skills, websites } from '../data.js';
+import { about, experience, profile, projects, skills } from '../data.js';
 import { EASE } from '../hooks.js';
 import { photo, shot } from '../shots.js';
 import SiteShowcase from './SiteShowcase.jsx';
 import AskPanel from './AskPanel.jsx';
-import { Brackets, Counter, Reveal, SectionHead, SmartLink, useTilt } from './ui.jsx';
+import { Brackets, Counter, Reveal, SectionHead, SmartLink } from './ui.jsx';
+
+/** Instagram glyph (lucide-react no longer ships brand icons). */
+function InstagramIcon() {
+  return (
+    <svg aria-hidden="true" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <rect x="2" y="2" width="20" height="20" rx="5" />
+      <circle cx="12" cy="12" r="4" />
+      <circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" />
+    </svg>
+  );
+}
 
 /* ───────────────────────── ABOUT ───────────────────────── */
 export function About() {
@@ -21,7 +32,13 @@ export function About() {
               ? <img src={portrait} alt="Raghul Babu J" width="1000" height="1250" className="aspect-[4/5] w-full object-cover object-center" />
               : <div className="label-mono grid aspect-[4/5] w-full place-items-center bg-ink-3 p-4 text-center text-dim">Add src/assets/photo.jpg</div>}
             <p className="label-mono flex items-center justify-between gap-2 border-t border-line px-3 py-2.5 text-dim">
-              raghul.jpg<span className="text-surf">● available</span>
+              {profile.instagram
+                ? <a href={profile.instagram} target="_blank" rel="noopener" aria-label="Instagram profile"
+                    className="inline-flex items-center gap-1.5 text-muted no-underline transition-colors hover:text-surf">
+                    <InstagramIcon />@{profile.instagram.replace(/\/$/, '').split('/').pop()}
+                  </a>
+                : 'raghul.jpg'}
+              <span className="text-surf">● available</span>
             </p>
           </Reveal>
 
@@ -41,13 +58,7 @@ export function About() {
           <div className="grid border-t border-line md:grid-cols-3 lg:col-span-3">
             {about.stats.map((s, i) => (
               <Reveal key={s.label} delay={i * 0.08} className="border-b border-line py-6 md:border-b-0 md:py-8 md:pr-6 md:[&:not(:first-child)]:border-l md:[&:not(:first-child)]:pl-6">
-                <div className="relative flex items-start gap-1 font-display text-[clamp(2.5rem,6vw,4.5rem)] font-semibold leading-none tracking-[-.04em]">
-                  <motion.svg aria-hidden="true" viewBox="0 0 120 120"
-                    className="pointer-events-none absolute -left-6 -top-6 size-[6.5rem] text-surf/25"
-                    animate={{ rotate: 360 }} transition={{ duration: 26, repeat: Infinity, ease: 'linear' }}>
-                    <circle cx="60" cy="60" r="54" fill="none" stroke="currentColor" strokeWidth="1.5" strokeDasharray="6 10" />
-                    <circle cx="60" cy="60" r="44" fill="none" stroke="currentColor" strokeWidth="1" strokeDasharray="2 8" opacity="0.7" />
-                  </motion.svg>
+                <div className="flex items-start gap-1 font-display text-[clamp(2.5rem,6vw,4.5rem)] font-semibold leading-none tracking-[-.04em]">
                   <Counter value={s.value} /><span className="mt-[.15em] text-[.35em] tracking-normal text-surf">{s.suffix}</span>
                 </div>
                 <p className="mt-2 max-w-[28ch] text-sm text-muted">{s.label}</p>
@@ -62,13 +73,9 @@ export function About() {
 
 /* ───────────────────────── SKILLS ───────────────────────── */
 function SkillPanel({ s, i }) {
-  const tilt = useTilt({ strength: 5, scale: 1.01 });
   return (
-    <motion.article
-      {...tilt.handlers} style={tilt.style} whileHover={tilt.whileHover}
-      initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.2 }}
-      transition={{ duration: 0.8, ease: EASE, delay: i * 0.06 }}
-      className="spotlight sheen edge-glow group relative grid content-start gap-4 bg-ink/80 px-6 py-8 transition-colors duration-500 hover:bg-ink-2/80"
+    <Reveal as="article" delay={i * 0.05}
+      className="group relative grid content-start gap-4 bg-ink/80 px-6 py-8 transition-colors duration-300 hover:bg-ink-2/80"
     >
       <Brackets />
       <div className="flex items-baseline justify-between gap-3">
@@ -78,30 +85,23 @@ function SkillPanel({ s, i }) {
       <p className="text-sm text-muted">{s.note}</p>
       <ul className="flex flex-wrap gap-2">
         {s.items.map((t) => (
-          <li key={t} className="rounded-full border border-line-2 px-3 py-1 text-sm transition duration-300 ease-expo hover:-translate-y-0.5 hover:border-surf hover:text-surf">{t}</li>
+          <li key={t} className="rounded-full border border-line-2 px-3 py-1 text-sm transition-colors duration-300 hover:border-surf hover:text-surf">{t}</li>
         ))}
       </ul>
-    </motion.article>
+    </Reveal>
   );
 }
 
 export function Skills() {
-  const onMove = (e) => {
-    e.currentTarget.querySelectorAll('.spotlight').forEach((p) => {
-      const r = p.getBoundingClientRect();
-      p.style.setProperty('--mx', `${e.clientX - r.left}px`);
-      p.style.setProperty('--my', `${e.clientY - r.top}px`);
-    });
-  };
   return (
     <section id="skills" aria-labelledby="skills-title" className="pb-20 md:pb-32">
       <div className="wrap">
         <SectionHead index="02" id="skills-title" path="/skills" title="A toolkit for the" muted="whole request lifecycle." />
-        <div onPointerMove={onMove} className="grid gap-px overflow-hidden rounded-2xl border border-line bg-line/70 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-px overflow-hidden rounded-2xl border border-line bg-line/70 sm:grid-cols-2 lg:grid-cols-3">
           {skills.map((s, i) => (
             <SkillPanel key={s.title} s={s} i={i} />
           ))}
-          <Reveal delay={0.3} y={24} className="relative grid content-between gap-6 bg-[linear-gradient(140deg,rgb(63_224_200/0.14),transparent_60%)] px-6 py-8">
+          <Reveal delay={0.3} y={24} className="relative grid content-between gap-6 bg-[linear-gradient(140deg,color-mix(in_oklab,var(--color-glow)_20%,transparent),transparent_60%)] px-6 py-8">
             <p className="label-mono uppercase text-surf">Open to work</p>
             <div className="grid gap-2">
               <h3 className="text-[1.625rem] font-semibold">Need this on your team?</h3>
@@ -187,21 +187,6 @@ function Phone({ children }) {
 }
 
 function ProjectCard({ p, index }) {
-  const reduce = useReducedMotion();
-  const mx = useMotionValue(0.5);
-  const my = useMotionValue(0.5);
-  const spring = { stiffness: 150, damping: 18 };
-  const rotateX = useSpring(useTransform(my, [0, 1], [6, -6]), spring);
-  const rotateY = useSpring(useTransform(mx, [0, 1], [-6, 6]), spring);
-  const glare = useMotionTemplate`radial-gradient(600px circle at ${useTransform(mx, (v) => `${v * 100}%`)} ${useTransform(my, (v) => `${v * 100}%`)}, rgba(255,255,255,.07), transparent 40%)`;
-
-  const move = (e) => {
-    if (reduce || e.pointerType !== 'mouse') return;
-    const r = e.currentTarget.getBoundingClientRect();
-    mx.set((e.clientX - r.left) / r.width);
-    my.set((e.clientY - r.top) / r.height);
-  };
-  const leave = () => { mx.set(0.5); my.set(0.5); };
   const flip = index % 2 === 1;
   const image = shot(p.shot);
   const image2 = shot(p.shot2);
@@ -209,42 +194,31 @@ function ProjectCard({ p, index }) {
   return (
     <Reveal>
       <motion.article
-        data-cursor="View" onPointerMove={move} onPointerLeave={leave}
         initial="rest" whileHover="hover" animate="rest"
-        style={{ rotateX, rotateY, transformPerspective: 1200 }}
-        className="sheen edge-glow group relative grid overflow-hidden rounded-2xl border border-line bg-ink-2/90 transition-colors duration-500 hover:border-line-2 lg:grid-cols-2"
+        className="group relative grid overflow-hidden rounded-2xl border border-line bg-ink-2/90 transition-colors duration-300 hover:border-line-2 lg:grid-cols-2"
       >
-        <motion.div aria-hidden="true" className="pointer-events-none absolute inset-0 z-20 opacity-0 transition-opacity duration-500 group-hover:opacity-100" style={{ background: glare }} />
         <Brackets className="z-20" />
 
         <div className={`media-grid relative grid min-h-[340px] max-w-full place-items-center overflow-hidden border-b border-line sm:min-h-[440px] lg:min-h-[560px] lg:border-b-0 ${flip ? 'lg:order-2 lg:border-l' : 'lg:border-r'} ${p.theme}`}>
           <div role="img" aria-label={image ? `${p.title} app, first screen` : `Illustration of the ${p.title} app`} className="absolute inset-0 grid place-items-center">
             {image2 && (
               <motion.div aria-hidden="true" className="absolute left-[6%] top-[12%] hidden origin-bottom-right sm:block"
-                variants={{ rest: { x: 0, rotate: -9, opacity: 0.6 }, hover: { x: -20, rotate: -13, opacity: 0.9 } }} transition={{ duration: 0.8, ease: EASE }}>
+                variants={{ rest: { x: 0, rotate: -9, opacity: 0.6 }, hover: { x: -12, rotate: -11, opacity: 0.85 } }} transition={{ duration: 0.5, ease: EASE }}>
                 <div className="origin-top-left scale-[.8]"><Phone><img src={image2} alt="" className="-mt-4 size-full object-cover object-top" /></Phone></div>
               </motion.div>
             )}
-            <motion.div className={`grid place-items-center ${image2 ? 'sm:translate-x-[18%]' : ''}`} variants={{ rest: { y: 0, rotate: 0 }, hover: { y: -12, rotate: flip ? 2 : -2 } }} transition={{ duration: 0.8, ease: EASE }}>
-              <motion.div className="grid place-items-center" animate={reduce ? undefined : { y: [0, -10, 0] }} transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}>
-                <Phone>
-                  {image
-                    ? <img src={image} alt="" className="-mt-4 size-full object-cover object-top" />
-                    : p.mock === 'shop' ? <ShopScreen /> : <CheckinScreen />}
-                </Phone>
-              </motion.div>
+            <motion.div className={`grid place-items-center ${image2 ? 'sm:translate-x-[18%]' : ''}`} variants={{ rest: { y: 0 }, hover: { y: -8 } }} transition={{ duration: 0.5, ease: EASE }}>
+              <Phone>
+                {image
+                  ? <img src={image} alt="" loading="lazy" className="-mt-4 size-full object-cover object-top" />
+                  : p.mock === 'shop' ? <ShopScreen /> : <CheckinScreen />}
+              </Phone>
             </motion.div>
-            <motion.span
-              variants={{ rest: { opacity: 0.9, x: 0 }, hover: { opacity: 1, x: 8 } }} transition={{ duration: 0.6, ease: EASE }}
-              className="label-mono absolute right-[8%] top-[14%] flex items-center gap-1.5 rounded-full border border-white/15 bg-ink/80 px-2.5 py-1 text-[10px] text-paper backdrop-blur">
+            <span
+              className="label-mono absolute right-[8%] top-[14%] flex items-center gap-1.5 rounded-full border border-white/15 bg-ink/85 px-2.5 py-1 text-[10px] text-paper">
               {p.mock === 'shop' ? <><WifiOff size={11} className="text-surf" />Offline ready</> : <><ShieldCheck size={11} className="text-surf" />Secure pickup</>}
-            </motion.span>
-          </div>
-          {!image && (
-            <span className="label-mono absolute bottom-3 left-3 z-10 max-w-[calc(100%-24px)] truncate rounded-full border border-dashed border-surf/50 bg-ink/85 px-2.5 py-1 text-[10px] text-surf-2">
-              Illustration · add src/assets/shots/{p.shot}.png
             </span>
-          )}
+          </div>
         </div>
 
         <div className="flex flex-col gap-4 p-6 md:p-10">
@@ -320,9 +294,9 @@ export function Experience() {
                 <span className="text-surf">{x.hash}</span>
                 <time className="font-sans text-sm tracking-normal text-paper">{x.dates}</time>
                 <span className={`label-mono w-fit rounded border px-1.5 py-0.5 text-[10px] uppercase tracking-[.14em] ${/present/i.test(x.dates)
-                  ? 'animate-glow-pulse border-surf/50 text-surf'
+                  ? 'border-surf/50 text-surf'
                   : 'border-line-2 text-dim'}`}>
-                  {/present/i.test(x.dates) ? 'in progress' : 'cleared'}
+                  {/present/i.test(x.dates) ? 'current' : 'completed'}
                 </span>
               </div>
               <div className="grid max-w-[720px] gap-3 md:pl-12">

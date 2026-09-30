@@ -7,8 +7,6 @@ export const prefersReducedMotion = () => query('(prefers-reduced-motion: reduce
 export const hasFinePointer = () => query('(pointer: fine)');
 
 export const ToastContext = createContext(() => {});
-export const PaletteContext = createContext('ocean');
-export const usePalette = () => useContext(PaletteContext);
 export const useToast = () => useContext(ToastContext);
 
 /** Live clock string for a time zone, ticking every second. */
