@@ -20,7 +20,7 @@ export const profile = {
   github: 'https://github.com/raghul9385',
   // Your number in international format, digits only (e.g. '919442987687').
   // Leave null and the WhatsApp button explains what to add.
-  whatsapp: 960084309,
+  whatsapp: 9600843709,
   resume: null, // e.g. '/raghul-babu-resume.pdf' (file in /public)
 };
 
