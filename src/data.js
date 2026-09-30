@@ -17,16 +17,16 @@ export const profile = {
   dailyStack: 'React · React Native · .NET',
   email: 'raghulbabuj@gmail.com',
   linkedin: 'https://www.linkedin.com/in/raghul-babu/',
-  github: null, // e.g. 'https://github.com/your-username'
+  github: 'https://github.com/raghul-babu', // e.g. 'https://github.com/your-username'
   // Your number in international format, digits only (e.g. '919442987687').
   // Leave null and the WhatsApp button explains what to add.
-  whatsapp: null,
+  whatsapp: 960084309,
   resume: null, // e.g. '/raghul-babu-resume.pdf' (file in /public)
 };
 
 export const socials = [
   { label: 'LinkedIn', meta: 'in/raghul-babu', href: 'https://www.linkedin.com/in/raghul-babu/' },
-  { label: 'GitHub', meta: '@your-handle', href: null, placeholder: 'Add your GitHub profile URL' },
+  { label: 'GitHub', meta: '@raghul-babu', href: 'https://github.com/raghul-babu', placeholder: 'Add your GitHub profile URL' },
   { label: 'Email', meta: 'direct', href: `mailto:${profile.email}`, cursor: 'Write' },
   { label: 'Résumé', meta: 'PDF', href: profile.resume, placeholder: 'Add your résumé PDF link' },
 ];

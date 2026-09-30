@@ -108,3 +108,50 @@ always works through `wa.me` (set `profile.whatsapp` in `src/data.js`).
   Upload the contents of `dist/`.
 - **API:** any Node host — Render, Railway, Fly.io, a VPS with `pm2`. Set the
   environment variables from `server/.env.example` in the host's dashboard.
+
+## Host it free on GitHub Pages
+
+The repo already contains `.github/workflows/deploy.yml`, which builds the site
+and publishes it every time you push to `main`.
+
+### One-time setup
+
+```bash
+# 1. create an empty repo on github.com (no README, no .gitignore) — e.g. "portfolio"
+# 2. from this folder:
+git remote add origin https://github.com/<your-username>/portfolio.git
+git push -u origin main
+```
+
+Then on GitHub: **Settings → Pages → Build and deployment → Source: GitHub
+Actions**. The next push publishes to:
+
+```
+https://<your-username>.github.io/portfolio/
+```
+
+Want `https://<your-username>.github.io/` instead? Name the repo
+`<your-username>.github.io` — everything else is identical. Asset paths are
+relative, so both layouts work with no code changes.
+
+Each later change is just:
+
+```bash
+git add -A && git commit -m "Update projects" && git push
+```
+
+### The contact API needs a separate host
+
+GitHub Pages only serves static files, so `server/` cannot run there. Options:
+
+| Option | Cost | Notes |
+| --- | --- | --- |
+| **Skip the server** | free | The form opens the visitor's email app and the WhatsApp button still works. Nothing to deploy. |
+| **Render** (free web service) | free | Push this repo, set root directory to `server`, start command `npm start`, add the env vars from `server/.env.example`. Free instances sleep when idle, so the first message can take ~30s. |
+| **Fly.io / Railway / Koyeb** | free tier | Same idea: a small Node service. |
+| **Cloudflare Workers** | free | Needs the endpoint rewritten for the Workers runtime — ask me and I'll port it. |
+
+Once the API is live, add its URL on GitHub under **Settings → Secrets and
+variables → Actions → Variables** as `VITE_CONTACT_API`
+(e.g. `https://raghul-contact.onrender.com/api/contact`), and set
+`ALLOWED_ORIGIN` on the API host to your Pages URL.
