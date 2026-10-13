@@ -1,85 +1,106 @@
-import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
-import { useEffect, useState } from 'react';
+import { motion } from 'motion/react';
+import { ArrowRight } from 'lucide-react';
 import { experience, profile, projects } from '../data.js';
 import { EASE, useClock } from '../hooks.js';
 import HeroStage from './HeroStage.jsx';
-import ShadowArmy from './ShadowArmy.jsx';
-import { Button } from './ui.jsx';
+import { Button, Tilt } from './ui.jsx';
 
-function FadeUp({ as = 'div', delay, className, children }) {
-  const M = motion[as];
+/** One-time entrance: fade and lift on first paint. */
+function FadeUp({ as = 'div', delay = 0, className, children }) {
+  const Component = motion[as];
   return (
-    <M className={className} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay, duration: 0.5, ease: EASE }}>
+    <Component
+      className={className}
+      initial={{ opacity: 0, y: 16 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay, duration: 0.6, ease: EASE }}
+    >
       {children}
-    </M>
+    </Component>
   );
 }
 
-function RotatingWord({ words }) {
-  const [index, setIndex] = useState(0);
-  const reduce = useReducedMotion();
-  useEffect(() => {
-    if (reduce) return;
-    const id = setInterval(() => setIndex((n) => (n + 1) % words.length), 3200);
-    return () => clearInterval(id);
-  }, [words, reduce]);
-  return (
-    <span className="inline-block whitespace-nowrap text-surf">
-      <AnimatePresence mode="wait">
-        <motion.span key={words[index]} className="inline-block"
-          initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.3 }}>
-          {words[index]}
-        </motion.span>
-      </AnimatePresence>
-    </span>
-  );
-}
-
-/** Ticks on its own so the rest of the hero does not re-render every second. */
+/** Ticks on its own so the rest of the hero doesn't re-render every second. */
 function LocalTime() {
   return <span className="tabular-nums">{useClock(profile.timeZone)}</span>;
 }
 
 export default function Hero() {
+  const current = experience[0];
+  const facts = [
+    ['Local time (IST)', <LocalTime key="time" />],
+    ['Based in', profile.location],
+    ['Daily stack', profile.dailyStack],
+    ['Shipped', `${projects.length} production apps`],
+  ];
+
   return (
-    <header id="top" className="relative flex min-h-[100svh] flex-col justify-center overflow-hidden border-b border-line pb-32 pt-[calc(104px+env(safe-area-inset-top,0px))]">
-      <ShadowArmy />
-      <div className="wrap relative z-10 grid items-center gap-12 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)] lg:gap-8">
+    <header
+      id="top"
+      className="relative flex min-h-[100svh] flex-col justify-center pt-[calc(120px+env(safe-area-inset-top,0px))] pb-16"
+    >
+      <div className="wrap grid items-center gap-14 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,1fr)] lg:gap-10">
         <div className="grid gap-6">
-          <FadeUp as="p" delay={0} className="system-window label-mono inline-flex w-fit items-center gap-3 border border-surf/45 bg-ink-2/90 px-3.5 py-1.5 uppercase text-muted">
-            <span className="text-surf">[ System ]</span>
-            {profile.availability || `${experience[0].role} · ${experience[0].org}`}
+          <FadeUp
+            as="p"
+            className="inline-flex w-fit items-center gap-2.5 rounded-full border border-line-2 bg-ink/60 px-3.5 py-1.5 text-sm text-muted"
+          >
+            <span
+              aria-hidden="true"
+              className="size-2 rounded-full bg-accent shadow-[0_0_10px_var(--color-accent)]"
+            />
+            {profile.availability || `${current.role} at ${current.org}`}
           </FadeUp>
 
-          <FadeUp as="h1" delay={0.05} className="text-[clamp(3.25rem,8vw,7rem)] font-semibold leading-[.88] tracking-[-.045em]">
-            <span className="block">{profile.firstName}</span>
-            <span className="block">{profile.lastName}<span className="text-surf">.</span></span>
+          <FadeUp
+            as="h1"
+            delay={0.05}
+            className="text-[clamp(3.25rem,8vw,6.75rem)] leading-[.92] font-bold tracking-[-.05em]"
+          >
+            <span className="block text-3d">{profile.firstName}</span>{' '}
+            <span className="block text-aurora pb-[.08em]">{profile.lastName}</span>
           </FadeUp>
 
-          <FadeUp as="p" delay={0.12} className="font-display text-[clamp(1.2rem,2.2vw,1.65rem)] font-[450] leading-tight tracking-tight">
-            {profile.role} <RotatingWord words={profile.rotatingWords} />
+          <FadeUp
+            as="p"
+            delay={0.1}
+            className="text-[clamp(1.2rem,2.3vw,1.65rem)] leading-snug font-medium tracking-tight"
+          >
+            <span className="text-accent">{profile.role}.</span>{' '}
+            <span className="text-paper/90">{profile.headline}</span>
           </FadeUp>
-          <FadeUp as="p" delay={0.18} className="max-w-[50ch] text-[clamp(1rem,1.25vw,1.0625rem)] text-muted">{profile.lede}</FadeUp>
-          <FadeUp delay={0.24} className="flex flex-wrap gap-3 pt-1">
-            <Button href="#work">See selected work <span className="transition-transform duration-300 group-hover:translate-x-1">→</span></Button>
-            <Button variant="ghost" href="#contact">Start a conversation</Button>
+
+          <FadeUp as="p" delay={0.15} className="max-w-[54ch] text-muted">
+            {profile.lede}
+          </FadeUp>
+
+          <FadeUp delay={0.2} className="flex flex-wrap gap-3 pt-2">
+            <Button href="#work">
+              View my work
+              <ArrowRight
+                size={16}
+                className="transition-transform duration-200 group-hover:translate-x-0.5"
+              />
+            </Button>
+            <Button variant="ghost" href="#contact">
+              Get in touch
+            </Button>
           </FadeUp>
         </div>
 
-        <FadeUp delay={0.2} className="w-full">
+        <FadeUp delay={0.15} className="w-full">
           <HeroStage />
         </FadeUp>
       </div>
 
-      <div className="wrap relative z-10">
-        <FadeUp delay={0.35} className="label-mono mt-12 grid grid-cols-2 gap-4 border-t border-line pt-4 uppercase text-dim lg:mt-14 lg:grid-cols-4 [&_span]:mt-0.5 [&_span]:block [&_span]:font-sans [&_span]:text-sm [&_span]:normal-case [&_span]:tracking-normal [&_span]:text-paper">
-          <div>Local time (IST)<LocalTime /></div>
-          <div>Based in<span>{profile.location}</span></div>
-          <div>Daily stack<span>{profile.dailyStack}</span></div>
-          <div>
-            <a href="#about" className="text-inherit no-underline hover:text-surf">Scroll ↓</a>
-            <span>{projects.length} featured apps below</span>
-          </div>
+      <div className="wrap">
+        <FadeUp delay={0.3} className="mt-16 grid grid-cols-2 gap-3 lg:grid-cols-4">
+          {facts.map(([label, value]) => (
+            <Tilt key={label} max={10} className="card glass px-5 py-4">
+              <p className="label-mono text-dim uppercase">{label}</p>
+              <p className="depth-1 mt-1 text-sm text-paper">{value}</p>
+            </Tilt>
+          ))}
         </FadeUp>
       </div>
     </header>

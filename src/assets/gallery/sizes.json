@@ -1,0 +1,42 @@
+{
+  "01-bike": {
+    "width": 600,
+    "height": 1000
+  },
+  "03-printed-shirt": {
+    "width": 667,
+    "height": 1000
+  },
+  "04-tea-hills-beanie": {
+    "width": 666,
+    "height": 1000
+  },
+  "05-tea-hills": {
+    "width": 1000,
+    "height": 666
+  },
+  "06-garden": {
+    "width": 667,
+    "height": 1000
+  },
+  "07-hilltop": {
+    "width": 1000,
+    "height": 667
+  },
+  "08-portrait": {
+    "width": 1000,
+    "height": 751
+  },
+  "11-park-bench": {
+    "width": 564,
+    "height": 1000
+  },
+  "12-forest-walk": {
+    "width": 1000,
+    "height": 564
+  },
+  "13-red-stripes": {
+    "width": 732,
+    "height": 1000
+  }
+}

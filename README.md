@@ -16,16 +16,51 @@ npm install
 npm run dev          # http://localhost:5173
 ```
 
-| Script | What it does |
-| --- | --- |
-| `npm run dev` | dev server with hot reload |
-| `npm run build` | production build — small HTML plus split chunks (**use this to host**) |
+| Script                 | What it does                                                                      |
+| ---------------------- | --------------------------------------------------------------------------------- |
+| `npm run dev`          | dev server with hot reload                                                        |
+| `npm run build`        | production build — small HTML plus split chunks (**use this to host**)            |
 | `npm run build:single` | everything inlined into one `dist/index.html` (previews only; slower first paint) |
-| `npm run preview` | serve the production build locally |
-| `npm run server` | start the contact API |
+| `npm run preview`      | serve the production build locally                                                |
+| `npm run server`       | start the contact API                                                             |
 
-Motion is kept to short fade-ins and hover states; there is no WebGL, custom
+The look is a dark theme with one teal accent and a slow CSS aurora behind the
+whole page (it holds still when the visitor asks for reduced motion). Other
+motion is kept to one-time fade-ins and hover colours; there is no WebGL, custom
 cursor or scroll hijacking, so the page stays light on low-end laptops and phones.
+
+## Code quality
+
+ESLint and Prettier use the same settings as the Mountain Rose Herbs app
+(single quotes, trailing commas, 100-character lines). Tailwind classes are
+sorted automatically by `prettier-plugin-tailwindcss`.
+
+| Script                  | What it does                                            |
+| ----------------------- | ------------------------------------------------------- |
+| `npm run lint`          | ESLint over the site, the contact API and the tests     |
+| `npm run lint:fix`      | same, fixing what it can                                |
+| `npm run format`        | Prettier, rewriting files                               |
+| `npm run format:check`  | Prettier, only reporting                                |
+| `npm test`              | every test once (website + contact API)                 |
+| `npm run test:watch`    | re-run tests as you save                                |
+| `npm run test:web`      | only the website tests                                  |
+| `npm run test:api`      | only the contact API tests                              |
+| `npm run test:coverage` | tests plus a coverage report in `coverage/`             |
+| `npm run check`         | lint + format check + tests — what CI runs before build |
+
+A husky pre-commit hook runs ESLint and Prettier on the staged files, and the
+GitHub Pages workflow refuses to deploy unless lint, formatting and tests pass.
+
+Tests live next to the code they cover, in `__tests__` folders:
+
+- `src/__tests__/` — Vitest + Testing Library in jsdom. `Contact.test.jsx`
+  drives the form like a visitor: validation messages, a successful send, the
+  email-app fallback when the API is down, WhatsApp and copy-to-clipboard.
+- `server/__tests__/` — the API through supertest. Emails go through a real
+  nodemailer `jsonTransport`, so the tests check the actual message (to,
+  reply-to, subject, body) without touching an SMTP server. WhatsApp is stubbed.
+- `server/__tests__/shared.test.js` — keeps the form and the API agreeing on
+  the enquiry types.
 
 ## Edit your content
 
@@ -33,10 +68,14 @@ Everything is in **[`src/data.js`](src/data.js)**: profile, skills, projects,
 experience, websites. Anything set to `null` (GitHub, résumé, WhatsApp) shows a
 short reminder instead of a broken link.
 
-- **Photo** → replace `src/assets/photo.jpg` (4:5 portrait, ~1000×1250).
+- **Photo** → replace `src/assets/photo.jpg` (2:3 portrait, e.g. 800×1200).
 - **Screenshots** → drop files in `src/assets/shots/` and reference them by
   file name in `src/data.js`.
-- **Themes** → palettes live in `src/theme.js` and `src/index.css`.
+- **Gallery** → save Instagram photos into `src/assets/gallery/` (JPG/PNG/WebP,
+  ~1080px wide is plenty). They are sorted by file name, so `01-…`, `02-…`
+  controls the order. Add a caption or a link to the post in `gallery` in
+  `src/data.js`. The section and its nav link stay hidden while the folder is empty.
+- **Colours and cursor** → tokens and the aurora live in `src/index.css`.
 
 ## Contact API
 
@@ -48,12 +87,12 @@ npm install
 cp .env.example .env     # then fill it in
 ```
 
-**Email (Gmail):** turn on 2-step verification, create an *App password* at
+**Email (Gmail):** turn on 2-step verification, create an _App password_ at
 <https://myaccount.google.com/apppasswords>, and set `SMTP_USER` / `SMTP_PASS`.
 Any SMTP provider works (Zoho, Brevo, Resend SMTP, your host's mail server).
 
-**WhatsApp:** create an app at <https://developers.facebook.com> → *WhatsApp* →
-*API setup*, then copy the temporary token and phone number ID into
+**WhatsApp:** create an app at <https://developers.facebook.com> → _WhatsApp_ →
+_API setup_, then copy the temporary token and phone number ID into
 `WHATSAPP_TOKEN` and `WHATSAPP_PHONE_ID`, and put your own number (international
 format, digits only) in `WHATSAPP_TO`.
 
@@ -143,12 +182,12 @@ git add -A && git commit -m "Update projects" && git push
 
 GitHub Pages only serves static files, so `server/` cannot run there. Options:
 
-| Option | Cost | Notes |
-| --- | --- | --- |
-| **Skip the server** | free | The form opens the visitor's email app and the WhatsApp button still works. Nothing to deploy. |
-| **Render** (free web service) | free | Push this repo, set root directory to `server`, start command `npm start`, add the env vars from `server/.env.example`. Free instances sleep when idle, so the first message can take ~30s. |
-| **Fly.io / Railway / Koyeb** | free tier | Same idea: a small Node service. |
-| **Cloudflare Workers** | free | Needs the endpoint rewritten for the Workers runtime — ask me and I'll port it. |
+| Option                        | Cost      | Notes                                                                                                                                                                                       |
+| ----------------------------- | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Skip the server**           | free      | The form opens the visitor's email app and the WhatsApp button still works. Nothing to deploy.                                                                                              |
+| **Render** (free web service) | free      | Push this repo, set root directory to `server`, start command `npm start`, add the env vars from `server/.env.example`. Free instances sleep when idle, so the first message can take ~30s. |
+| **Fly.io / Railway / Koyeb**  | free tier | Same idea: a small Node service.                                                                                                                                                            |
+| **Cloudflare Workers**        | free      | Needs the endpoint rewritten for the Workers runtime — ask me and I'll port it.                                                                                                             |
 
 Once the API is live, add its URL on GitHub under **Settings → Secrets and
 variables → Actions → Variables** as `VITE_CONTACT_API`

@@ -16,7 +16,10 @@ export default defineConfig(() => {
     // during `npm run dev`, /api goes to the contact server
     server: {
       proxy: {
-        '/api': { target: process.env.VITE_API_TARGET || 'http://localhost:8787', changeOrigin: true },
+        '/api': {
+          target: process.env.VITE_API_TARGET || 'http://localhost:8787',
+          changeOrigin: true,
+        },
       },
     },
     plugins: [react(), tailwindcss(), ...(single ? [viteSingleFile()] : [])],

@@ -1,122 +1,173 @@
-import { AnimatePresence, motion, useMotionValueEvent, useScroll, useSpring } from 'motion/react';
+import { AnimatePresence, motion } from 'motion/react';
+import { Download, Menu, X } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
-import { profile } from '../data.js';
-import { openResume } from '../resume.js';
-import { EASE, useToast } from '../hooks.js';
-import { ArrowDownToLine } from 'lucide-react';
+import { gallery, profile } from '../data.js';
+import { useOpenResume } from '../hooks.js';
+import { galleryImages } from '../shots.js';
 import Logo from './Logo.jsx';
 import { Button } from './ui.jsx';
 
-const SECTIONS = ['about', 'skills', 'ask', 'work', 'experience', 'contact'];
-const label = (id) => id[0].toUpperCase() + id.slice(1);
+// The gallery link only appears once there are photos in src/assets/gallery.
+const SECTIONS = [
+  'about',
+  'skills',
+  'ask',
+  'work',
+  'experience',
+  ...(galleryImages(gallery).length > 0 ? ['gallery'] : []),
+  'contact',
+];
+const titleCase = (id) => id[0].toUpperCase() + id.slice(1);
 
-function RollText({ children }) {
-  return (
-    <span className="block h-[1.6em] overflow-hidden">
-      <span className="block transition-transform duration-500 ease-expo group-hover:-translate-y-1/2 group-focus-visible:-translate-y-1/2">
-        {children}
-        <span aria-hidden="true" className="block text-surf">{children}</span>
-      </span>
-    </span>
-  );
+/** Highlights the link for whichever section is in the middle of the screen. */
+function useActiveSection(ids) {
+  const [active, setActive] = useState('');
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) setActive(entry.target.id);
+        }
+      },
+      { rootMargin: '-45% 0px -50% 0px' },
+    );
+    for (const id of ids) {
+      const section = document.getElementById(id);
+      if (section) observer.observe(section);
+    }
+    return () => observer.disconnect();
+  }, [ids]);
+
+  return active;
+}
+
+function useScrolledPast(offset) {
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const update = () => setScrolled(window.scrollY > offset);
+    update();
+    window.addEventListener('scroll', update, { passive: true });
+    return () => window.removeEventListener('scroll', update);
+  }, [offset]);
+
+  return scrolled;
 }
 
 export default function Nav() {
-  const toast = useToast();
-  const getResume = () => {
-    if (!openResume()) toast("Allow pop-ups to open your résumé");
-    else toast("Résumé ready — save it as PDF from the print dialog");
-  };
-  const menuBtn = useRef(null);
-  const { scrollY, scrollYProgress } = useScroll();
-  const progress = useSpring(scrollYProgress, { stiffness: 200, damping: 30, restDelta: 0.001 });
-  const [scrolled, setScrolled] = useState(false);
-  const [hidden, setHidden] = useState(false);
-  const [open, setOpen] = useState(false);
-  const [active, setActive] = useState('');
-
-  useMotionValueEvent(scrollY, 'change', (y) => {
-    setScrolled(y > 20);
-    setHidden(y > (scrollY.getPrevious() ?? 0) && y > 240);
-  });
+  const openResume = useOpenResume();
+  const active = useActiveSection(SECTIONS);
+  const scrolled = useScrolledPast(20);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const menuButton = useRef(null);
 
   useEffect(() => {
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach((e) => e.isIntersecting && setActive(e.target.id));
-    }, { rootMargin: '-45% 0px -50% 0px' });
-    SECTIONS.forEach((id) => { const el = document.getElementById(id); if (el) io.observe(el); });
-    return () => io.disconnect();
-  }, []);
+    document.body.style.overflow = menuOpen ? 'hidden' : '';
+    if (!menuOpen) return undefined;
 
-  useEffect(() => {
-    document.body.style.overflow = open ? 'hidden' : '';
-    if (!open) return;
-    const onKey = (e) => { if (e.key === 'Escape') { setOpen(false); menuBtn.current?.focus(); } };
-    window.addEventListener('keydown', onKey);
-    return () => window.removeEventListener('keydown', onKey);
-  }, [open]);
-
-  const resume = { href: profile.resume, placeholder: 'Add your résumé PDF link' };
+    const closeOnEscape = (event) => {
+      if (event.key !== 'Escape') return;
+      setMenuOpen(false);
+      menuButton.current?.focus();
+    };
+    window.addEventListener('keydown', closeOnEscape);
+    return () => window.removeEventListener('keydown', closeOnEscape);
+  }, [menuOpen]);
 
   return (
     <>
-      <motion.div aria-hidden="true" className="fixed inset-x-0 top-0 z-[60] h-0.5 origin-left bg-gradient-to-r from-glow via-surf to-surf-2" style={{ scaleX: progress }} />
-      <motion.nav
+      <nav
         aria-label="Primary"
-        animate={{ y: hidden && !open ? '-110%' : '0%' }}
-        transition={{ duration: 0.5, ease: EASE }}
-        className={`fixed inset-x-0 top-0 z-50 border-b pt-[env(safe-area-inset-top,0px)] transition-colors duration-300 ${scrolled ? 'border-line/0 bg-ink/70 backdrop-blur-xl after:absolute after:inset-x-0 after:bottom-0 after:h-px after:bg-gradient-to-r after:from-transparent after:via-surf/50 after:to-transparent' : 'border-transparent'}`}
+        className="fixed inset-x-0 top-0 z-50 px-3 pt-[calc(10px+env(safe-area-inset-top,0px))]"
       >
-        <div className="wrap flex h-17 items-center justify-between gap-6">
-          <a href="#top" className="group flex items-center gap-3 font-mono text-sm no-underline" aria-label={`${profile.firstName} ${profile.lastName}, back to top`}>
-            <Logo size={44} tagline={false} title="" className="shrink-0 text-surf" />
-            <span className="hidden text-muted sm:inline">~/<b className="font-medium text-paper">{profile.handle}</b></span>
+        <div
+          className={`mx-auto flex h-14 max-w-[1200px] items-center justify-between gap-6 rounded-full border pr-2 pl-3 transition-[background-color,border-color,box-shadow] duration-300 ${
+            scrolled
+              ? 'border-line-2 bg-ink-2/75 shadow-[0_18px_40px_-18px_rgb(0_0_0/0.8),inset_0_1px_0_rgb(255_255_255/0.06)] backdrop-blur-md'
+              : 'border-transparent'
+          }`}
+        >
+          <a
+            href="#top"
+            className="flex items-center gap-3 text-paper no-underline"
+            aria-label={`${profile.firstName} ${profile.lastName}, back to top`}
+          >
+            <Logo size={34} title="" className="shrink-0 text-accent" />
+            <span className="hidden font-mono text-sm text-muted sm:inline">
+              {profile.firstName.toLowerCase()}
+              <span className="text-dim">.dev</span>
+            </span>
           </a>
 
-          <div className="hidden items-center gap-2 lg:flex">
+          <div className="hidden items-center gap-1 lg:flex">
             {SECTIONS.map((id) => (
-              <a key={id} href={`#${id}`} aria-current={active === id ? 'true' : undefined}
-                className={`group relative rounded-full px-3 py-2 text-sm no-underline transition-colors ${active === id ? 'text-paper' : 'text-muted'}`}>
-                <RollText>{label(id)}</RollText>
-                {active === id && <motion.span layoutId="nav-dot" className="absolute bottom-0.5 left-1/2 -ml-0.5 size-1 rounded-full bg-surf" />}
+              <a
+                key={id}
+                href={`#${id}`}
+                aria-current={active === id ? 'true' : undefined}
+                className={`rounded-full px-3.5 py-2 text-sm no-underline transition-colors duration-200 hover:text-paper ${
+                  active === id ? 'bg-ink-3/80 text-paper' : 'text-muted'
+                }`}
+              >
+                {titleCase(id)}
               </a>
             ))}
             <div className="ml-3">
-              {resume.href
-                ? <Button size="sm" href={resume.href} download>Résumé <ArrowDownToLine size={15} /></Button>
-                : <Button size="sm" onClick={getResume}>Résumé <ArrowDownToLine size={15} className="transition-transform duration-500 ease-expo group-hover:translate-y-0.5" /></Button>}
+              {profile.resume ? (
+                <Button size="sm" href={profile.resume} download>
+                  Résumé <Download size={15} />
+                </Button>
+              ) : (
+                <Button size="sm" onClick={openResume}>
+                  Résumé <Download size={15} />
+                </Button>
+              )}
             </div>
           </div>
 
-          <button ref={menuBtn} type="button" aria-expanded={open} aria-controls="mobileMenu" aria-label={open ? 'Close menu' : 'Open menu'}
-            onClick={() => setOpen((o) => !o)}
-            className="relative z-[70] size-11 cursor-pointer rounded-full border border-line-2 bg-transparent text-paper lg:hidden">
-            <motion.i animate={open ? { top: 21, rotate: 45 } : { top: 17, rotate: 0 }} transition={{ duration: 0.4, ease: EASE }} className="absolute inset-x-3.25 h-[1.5px] bg-current" />
-            <motion.i animate={open ? { top: 21, rotate: -45 } : { top: 25, rotate: 0 }} transition={{ duration: 0.4, ease: EASE }} className="absolute inset-x-3.25 h-[1.5px] bg-current" />
+          <button
+            ref={menuButton}
+            type="button"
+            aria-expanded={menuOpen}
+            aria-controls="mobile-menu"
+            aria-label={menuOpen ? 'Close menu' : 'Open menu'}
+            onClick={() => setMenuOpen((open) => !open)}
+            className="relative z-[70] grid size-11 cursor-pointer place-items-center rounded-full border border-line-2 bg-ink/60 text-paper lg:hidden"
+          >
+            {menuOpen ? <X size={18} /> : <Menu size={18} />}
           </button>
         </div>
-      </motion.nav>
+      </nav>
 
       <AnimatePresence>
-        {open && (
+        {menuOpen && (
           <motion.div
-            id="mobileMenu"
-            initial={{ clipPath: 'circle(0% at 94% 4%)' }}
-            animate={{ clipPath: 'circle(150% at 94% 4%)' }}
-            exit={{ clipPath: 'circle(0% at 94% 4%)' }}
-            transition={{ duration: 0.4, ease: EASE }}
-            className="fixed inset-0 z-[45] flex flex-col gap-2 bg-ink px-[clamp(16px,4vw,48px)] pb-12 pt-[calc(96px+env(safe-area-inset-top,0px))]"
+            id="mobile-menu"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="fixed inset-0 z-[45] flex flex-col gap-1 bg-ink/97 px-[clamp(16px,4vw,48px)] pt-[calc(88px+env(safe-area-inset-top,0px))] pb-12"
           >
-            {SECTIONS.map((id, i) => (
-              <motion.a key={id} href={`#${id}`} onClick={() => setOpen(false)}
-                initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.04, duration: 0.35, ease: EASE }}
-                className="flex items-baseline gap-3 font-display text-[clamp(2.5rem,12vw,4rem)] font-semibold leading-tight tracking-tight no-underline">
-                <small className="label-mono text-surf">/{id}</small>{label(id)}
-              </motion.a>
+            {SECTIONS.map((id) => (
+              <a
+                key={id}
+                href={`#${id}`}
+                onClick={() => setMenuOpen(false)}
+                className="border-b border-line py-4 text-2xl font-semibold tracking-tight text-paper no-underline"
+              >
+                {titleCase(id)}
+              </a>
             ))}
-            <div className="mt-auto grid gap-4">
-              <p className="label-mono text-muted">{profile.email}</p>
-            </div>
+            <button
+              type="button"
+              onClick={openResume}
+              className="mt-6 inline-flex w-fit cursor-pointer items-center gap-2 rounded-full border border-accent bg-accent px-5 py-3 text-sm font-semibold text-accent-ink"
+            >
+              Résumé <Download size={15} />
+            </button>
+            <p className="mt-auto label-mono text-muted">{profile.email}</p>
           </motion.div>
         )}
       </AnimatePresence>

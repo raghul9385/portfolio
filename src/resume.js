@@ -1,7 +1,8 @@
 import { about, experience, profile, projects, skills, websites } from './data.js';
 import { photo } from './shots.js';
 
-const esc = (s) => String(s).replace(/[&<>]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' })[c]);
+const esc = (s) =>
+  String(s).replace(/[&<>]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' })[c]);
 const fullName = `${profile.firstName} ${profile.lastName}`;
 const strip = (url) => url.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '');
 
@@ -10,7 +11,8 @@ const ICON = {
   pin: '<path d="M8 1.6c2.3 0 4 1.8 4 4C12 8.9 8 14.4 8 14.4S4 8.9 4 5.6c0-2.2 1.7-4 4-4z" fill="none" stroke="currentColor" stroke-width="1.3"/><circle cx="8" cy="5.6" r="1.5" fill="currentColor"/>',
   link: '<path d="M6.5 9.5a3 3 0 0 0 4.2 0l2-2a3 3 0 1 0-4.2-4.2l-.8.8" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M9.5 6.5a3 3 0 0 0-4.2 0l-2 2a3 3 0 1 0 4.2 4.2l.8-.8" fill="none" stroke="currentColor" stroke-width="1.3"/>',
 };
-const icon = (name) => `<svg viewBox="0 0 16 16" width="11" height="11" aria-hidden="true">${ICON[name]}</svg>`;
+const icon = (name) =>
+  `<svg viewBox="0 0 16 16" width="11" height="11" aria-hidden="true">${ICON[name]}</svg>`;
 
 /** A4 résumé built from the same content as the site. */
 export function buildResumeHTML() {
@@ -28,8 +30,10 @@ export function buildResumeHTML() {
     .join('');
 
   const isEdu = (x) => /\bB\.?E\b|degree|college|university/i.test(`${x.role} ${x.org}`);
-  const jobs = experience.filter((x) => !isEdu(x))
-    .map((x) => `
+  const jobs = experience
+    .filter((x) => !isEdu(x))
+    .map(
+      (x) => `
       <article class="entry">
         <div class="entry-head">
           <h3>${esc(x.role)}</h3>
@@ -38,11 +42,13 @@ export function buildResumeHTML() {
         <p class="org">${esc(x.org)}</p>
         <p>${esc(x.summary)}</p>
         ${x.points.length ? `<ul>${x.points.map((p) => `<li>${esc(p)}</li>`).join('')}</ul>` : ''}
-      </article>`)
+      </article>`,
+    )
     .join('');
 
   const work = projects
-    .map((p) => `
+    .map(
+      (p) => `
       <article class="entry project">
         <div class="entry-head">
           <h3>${esc(p.title)}</h3>
@@ -52,19 +58,30 @@ export function buildResumeHTML() {
         <p><b>Role</b> ${esc(p.role)}</p>
         <p><b>Outcome</b> ${esc(p.result)}</p>
         <p class="tags">${p.tech.map((t) => `<span>${esc(t)}</span>`).join('')}</p>
-      </article>`)
+      </article>`,
+    )
     .join('');
 
   const skillBlocks = skills
-    .map((s) => `<div class="skill"><h4>${esc(s.title)}</h4><p>${s.items.map(esc).join(' · ')}</p></div>`)
+    .map(
+      (s) =>
+        `<div class="skill"><h4>${esc(s.title)}</h4><p>${s.items.map(esc).join(' · ')}</p></div>`,
+    )
     .join('');
 
   const sites = websites
-    .map((w) => `<li><b>${esc(w.name)}</b><span>${esc(w.kind)}</span><em>${esc(strip(w.href))}</em></li>`)
+    .map(
+      (w) =>
+        `<li><b>${esc(w.name)}</b><span>${esc(w.kind)}</span><em>${esc(strip(w.href))}</em></li>`,
+    )
     .join('');
 
-  const eduBlock = experience.filter(isEdu)
-    .map((e) => `<div class="edu"><h4>${esc(e.role)}</h4><p>${esc(e.org)}${e.university ? ` · ${esc(e.university)}` : ''}</p><time>${esc(e.dates)}${e.grade ? ` · ${esc(e.grade)}` : ''}</time></div>`)
+  const eduBlock = experience
+    .filter(isEdu)
+    .map(
+      (e) =>
+        `<div class="edu"><h4>${esc(e.role)}</h4><p>${esc(e.org)}${e.university ? ` · ${esc(e.university)}` : ''}</p><time>${esc(e.dates)}${e.grade ? ` · ${esc(e.grade)}` : ''}</time></div>`,
+    )
     .join('');
 
   return `<!doctype html>
@@ -153,7 +170,7 @@ export function buildResumeHTML() {
       ${src ? `<img class="avatar" src="${src}" alt="${esc(fullName)}">` : ''}
       <div>
         <h1>${esc(fullName)}</h1>
-        <p class="role">${esc(profile.role.replace(/ crafting$/, ''))}</p>
+        <p class="role">${esc(profile.role)}</p>
         <div class="contacts">${contacts}</div>
       </div>
     </header>
@@ -203,7 +220,13 @@ export function openResume() {
   win.document.write(buildResumeHTML());
   win.document.close();
   win.focus();
-  const print = () => { try { win.print(); } catch { /* the tab is still usable */ } };
+  const print = () => {
+    try {
+      win.print();
+    } catch {
+      /* the tab is still usable */
+    }
+  };
   if (win.document.readyState === 'complete') setTimeout(print, 600);
   else win.addEventListener('load', () => setTimeout(print, 600));
   return true;

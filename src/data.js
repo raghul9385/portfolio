@@ -6,12 +6,10 @@
 export const profile = {
   firstName: 'Raghul',
   lastName: 'Babu J',
-  handle: 'raghul-babu',
-  role: 'React / React Native developer crafting',
-  rotatingWords: ['smooth mobile apps', 'web experiences', 'clean interfaces', 'scalable back ends'],
-  lede:
-    'UI engineer and Software Developer at Cennest Technologies. I build fast, reliable web and mobile products with React, React Native and ASP.NET, from the SQL Server schema to the last screen transition.',
-  //availability: 'Open to work · on-site, hybrid, remote',
+  role: 'React & React Native Developer',
+  headline: 'I build fast, dependable mobile and web apps.',
+  lede: 'UI engineer and Software Developer at Cennest Technologies. I build fast, reliable web and mobile products with React, React Native and ASP.NET, from the SQL Server schema to the last screen transition.',
+  // availability: 'Open to new opportunities', // uncomment to show it in the hero and Ask panel
   location: 'Nagercoil, Tamil Nadu',
   timeZone: 'Asia/Kolkata',
   dailyStack: 'React · React Native · .NET',
@@ -29,11 +27,9 @@ export const socials = [
   { label: 'LinkedIn', meta: 'in/raghul-babu', href: 'https://www.linkedin.com/in/raghul-babu/' },
   { label: 'GitHub', meta: '@raghul9385', href: 'https://github.com/raghul9385' },
   { label: 'Instagram', meta: '@raghul_babu_j', href: 'https://www.instagram.com/raghul_babu_j/' },
-  { label: 'Email', meta: 'direct', href: `mailto:${profile.email}`, cursor: 'Write' },
+  { label: 'Email', meta: 'direct', href: `mailto:${profile.email}` },
   { label: 'Résumé', meta: 'PDF', href: profile.resume, placeholder: 'Add your résumé PDF link' },
 ];
-
-export const marquee = ['React Native', 'React.js', 'TypeScript', 'Expo', 'Redux Toolkit', 'JavaScript', 'ASP.NET Core', 'C#', 'SQL Server', 'REST APIs', 'CSS', 'Clean Architecture'];
 
 export const about = {
   paragraphs: [
@@ -47,93 +43,208 @@ export const about = {
     'One component system shared across web and mobile.',
   ],
   stats: [
-    { value: 3, suffix: '+ yrs', label: 'Building for the web and mobile, at Wikpolt Softwares and Cennest Technologies' },
-    { value: 2, suffix: ' apps', label: 'Production mobile apps: Mountain Rose Herbs and KidCheck' },
+    {
+      value: 3,
+      suffix: '+ yrs',
+      label: 'Building for the web and mobile, at Wikpolt Softwares and Cennest Technologies',
+    },
+    {
+      value: 2,
+      suffix: ' apps',
+      label: 'Production mobile apps: Mountain Rose Herbs and KidCheck',
+    },
     { value: 3, suffix: ' layers', label: 'UI, API and database, all in my daily work' },
   ],
 };
 
 export const skills = [
-  { title: 'Web frontend', tag: 'react', note: 'Responsive, component-driven interfaces with predictable state.', items: ['React.js', 'Redux', 'JavaScript', 'HTML5', 'CSS3', 'Responsive design'] },
-  { title: 'Mobile', tag: 'react native', note: 'Cross-platform apps that feel native on Android and iOS.', items: ['React Native', 'Expo', 'TypeScript', 'Redux Toolkit', 'Reanimated', 'SQLite offline', 'Push notifications'] },
-  { title: 'UI engineering', tag: 'craft', note: 'Turning designs into pixel-accurate, reusable components.', items: ['Design to code', 'Component libraries', 'Micro-interactions', 'Accessibility'] },
-  { title: 'Backend', tag: '.net', note: 'Clean, layered APIs that front ends can rely on.', items: ['C#', '.NET Core', 'ASP.NET', 'REST APIs'] },
-  { title: 'Data', tag: 'sql', note: 'Relational data modelled for the queries the app actually runs.', items: ['SQL Server', 'SQL', 'Database design', 'Query optimisation'] },
+  {
+    title: 'Web frontend',
+    tag: 'react',
+    note: 'Responsive, component-driven interfaces with predictable state.',
+    items: ['React.js', 'Redux', 'JavaScript', 'HTML5', 'CSS3', 'Responsive design'],
+  },
+  {
+    title: 'Mobile',
+    tag: 'react native',
+    note: 'Cross-platform apps that feel native on Android and iOS.',
+    items: [
+      'React Native',
+      'Expo',
+      'TypeScript',
+      'Redux Toolkit',
+      'Reanimated',
+      'SQLite offline',
+      'Push notifications',
+    ],
+  },
+  {
+    title: 'UI engineering',
+    tag: 'craft',
+    note: 'Turning designs into pixel-accurate, reusable components.',
+    items: ['Design to code', 'Component libraries', 'Micro-interactions', 'Accessibility'],
+  },
+  {
+    title: 'Backend',
+    tag: '.net',
+    note: 'Clean, layered APIs that front ends can rely on.',
+    items: ['C#', '.NET Core', 'ASP.NET', 'REST APIs'],
+  },
+  {
+    title: 'Data',
+    tag: 'sql',
+    note: 'Relational data modelled for the queries the app actually runs.',
+    items: ['SQL Server', 'SQL', 'Database design', 'Query optimisation'],
+  },
 ];
 
 // Real projects from Cennest Technologies.
 // `shot`: phone screenshot file name in src/assets/shots (e.g. mountain-rose-herbs.png) — replaces the drawn mock when present.
-// `mock`: placeholder art when there is no image: shop | checkin | ledger | chart | calendar | chat
+// `mock`: placeholder art when there is no image: shop | checkin
 export const projects = [
   {
-    title: "Mountain Rose Herbs", year: "iOS · Android", kind: "E-commerce · React Native", mock: "shop", theme: "m-herbs", url: "mountainroseherbs · shop", shot: "mountain-rose-herbs",
-    problem: "An organic herbs and botanicals retailer needed a native shopping app that stays fast and dependable, even on a patchy connection.",
-    role: "React Native app developer. I created the app UI: screens, reusable components and the theme system, connected to the store API.",
-    result: "Full storefront app: shop, search, cart, wishlist, loyalty, gifts and checkout, with offline support and push notifications.",
-    tech: ["React Native", "Expo Router", "TypeScript", "Redux Toolkit", "Reanimated",  "BigCommerce"],
-    links: [{ label: "mountainroseherbs.com ↗", href: "https://mountainroseherbs.com/" }],
+    title: 'Mountain Rose Herbs',
+    year: 'iOS · Android',
+    kind: 'E-commerce · React Native',
+    mock: 'shop',
+    theme: 'm-herbs',
+    shot: 'mountain-rose-herbs',
+    problem:
+      'An organic herbs and botanicals retailer needed a native shopping app that stays fast and dependable, even on a patchy connection.',
+    role: 'React Native app developer. I created the app UI: screens, reusable components and the theme system, connected to the store API.',
+    result:
+      'Full storefront app: shop, search, cart, wishlist, loyalty, gifts and checkout, with offline support and push notifications.',
+    tech: [
+      'React Native',
+      'Expo Router',
+      'TypeScript',
+      'Redux Toolkit',
+      'Reanimated',
+      'BigCommerce',
+    ],
+    links: [{ label: 'mountainroseherbs.com ↗', href: 'https://mountainroseherbs.com/' }],
   },
   {
-    title: "KidCheck", year: "iOS · Android", kind: "Child check-in · Web & mobile", mock: "checkin", theme: "m-kid", url: "kidcheck · sunday check-in", shot: "kidcheck", shot2: "kidcheck-kids",
-    problem: "Churches and childcare programs need to check children in fast and make sure each child goes home only with an authorised adult.",
-    role: "I fix front-end issues raised by the client across the check-in app, reports and the React web app, and work on the .NET application.",
-    result: "Client-reported issues resolved across check-in, reporting and the web app, keeping check-in dependable for families and staff.",
-    tech: ["React Native", "React.js", "ASP.NET", ".NET", "SQL", "Reports"],
-    links: [{ label: "App Store ↗", href: "https://apps.apple.com/us/app/kidcheck/id617474663" }, { label: "kidcheck.com ↗", href: "https://www.kidcheck.com/" }],
+    title: 'KidCheck',
+    year: 'iOS · Android',
+    kind: 'Child check-in · Web & mobile',
+    mock: 'checkin',
+    theme: 'm-kid',
+    shot: 'kidcheck',
+    shot2: 'kidcheck-kids',
+    problem:
+      'Churches and childcare programs need to check children in fast and make sure each child goes home only with an authorised adult.',
+    role: 'I fix front-end issues raised by the client across the check-in app, reports and the React web app, and work on the .NET application.',
+    result:
+      'Client-reported issues resolved across check-in, reporting and the web app, keeping check-in dependable for families and staff.',
+    tech: ['React Native', 'React.js', 'ASP.NET', '.NET', 'SQL', 'Reports'],
+    links: [
+      { label: 'App Store ↗', href: 'https://apps.apple.com/us/app/kidcheck/id617474663' },
+      { label: 'kidcheck.com ↗', href: 'https://www.kidcheck.com/' },
+    ],
   },
+];
+
+// Instagram gallery. Put new photos in gallery-originals/ and run
+// `npm run gallery` to make web-sized copies. This list sets the order and the
+// captions; add `href: 'https://www.instagram.com/p/POST_ID/'` to link a photo
+// to its post (otherwise it opens the Instagram profile). Photos not listed
+// here still show, after these, sorted by file name.
+export const gallery = [
+  { file: '05-tea-hills', caption: 'Up in the tea hills' },
+  { file: '01-bike', caption: 'Weekend ride' },
+  { file: '03-printed-shirt', caption: 'Sunny day out' },
+  { file: '07-hilltop', caption: 'Hilltop break' },
+  { file: '04-tea-hills-beanie', caption: 'Misty morning in the hills' },
+  { file: '13-red-stripes', caption: 'Red stripes' },
+  { file: '06-garden', caption: 'Under the palms' },
+  { file: '12-forest-walk', caption: 'Forest walk' },
+  { file: '11-park-bench', caption: 'Taking a break' },
+  { file: '08-portrait', caption: 'Portrait' },
 ];
 
 // Client websites built at Wikpolt Softwares. `shot` = file in src/assets/shots; tech detected from each live site.
 export const websites = [
   {
-    name: "Zonduo", kind: "PhD & research services", href: "https://zonduo.com/", shot: "site-zonduo",
-    summary: "PhD assistance site with review badges, service mega-menus, code-booking and publication pages.",
-    tech: ["HTML5", "Bootstrap", "jQuery", "Owl Carousel", "Isotope", "Animate.css", "PHP"],
+    name: 'Zonduo',
+    kind: 'PhD & research services',
+    href: 'https://zonduo.com/',
+    shot: 'site-zonduo',
+    summary:
+      'PhD assistance site with review badges, service mega-menus, code-booking and publication pages.',
+    tech: ['HTML5', 'Bootstrap', 'jQuery', 'Owl Carousel', 'Isotope', 'Animate.css', 'PHP'],
   },
   {
-    name: "Help for Thesis", kind: "Academic consulting", href: "https://helpforthesis.com/", shot: "site-helpforthesis",
-    summary: "Lead-generation landing page with an inline “Book your papers” order form, live chat and service menus.",
-    tech: ["Bootstrap", "jQuery UI", "AOS", "Owl Carousel", "Nice Select", "PHP"],
+    name: 'Help for Thesis',
+    kind: 'Academic consulting',
+    href: 'https://helpforthesis.com/',
+    shot: 'site-helpforthesis',
+    summary:
+      'Lead-generation landing page with an inline “Book your papers” order form, live chat and service menus.',
+    tech: ['Bootstrap', 'jQuery UI', 'AOS', 'Owl Carousel', 'Nice Select', 'PHP'],
   },
   {
-    name: "Wikpolt Softwares", kind: "Company website", href: "https://wikpoltsoftwares.com/", shot: "site-wikpolt",
-    summary: "Site for an AI and software company, with a hexagon photo-grid hero plus courses, internship and careers pages.",
-    tech: ["HTML5", "CSS3", "JavaScript", "Font Awesome", "PHP"],
+    name: 'Wikpolt Softwares',
+    kind: 'Company website',
+    href: 'https://wikpoltsoftwares.com/',
+    shot: 'site-wikpolt',
+    summary:
+      'Site for an AI and software company, with a hexagon photo-grid hero plus courses, internship and careers pages.',
+    tech: ['HTML5', 'CSS3', 'JavaScript', 'Font Awesome', 'PHP'],
   },
   {
-    name: "Precise Global Technologies", kind: "Corporate website", href: "http://preciseglobaltechnologiies.com/", shot: "site-precise",
-    summary: "Corporate site with a full-screen hero, animated fun-fact counters, a filterable portfolio grid and tilt effects.",
-    tech: ["Bootstrap", "jQuery", "Swiper", "Slick", "AOS", "Isotope", "Tilt.js"],
+    name: 'Precise Global Technologies',
+    kind: 'Corporate website',
+    href: 'http://preciseglobaltechnologiies.com/',
+    shot: 'site-precise',
+    summary:
+      'Corporate site with a full-screen hero, animated fun-fact counters, a filterable portfolio grid and tilt effects.',
+    tech: ['Bootstrap', 'jQuery', 'Swiper', 'Slick', 'AOS', 'Isotope', 'Tilt.js'],
   },
   {
-    name: "eFurm Solution", kind: "Research support services", href: "https://efurmsolution.com/", shot: "site-efurm",
-    summary: "Research-support site with animated stat counters, a lightbox gallery, sliders and a PHP enquiry form.",
-    tech: ["Bootstrap 5", "AOS", "Swiper", "GLightbox", "PureCounter", "PHP"],
+    name: 'eFurm Solution',
+    kind: 'Research support services',
+    href: 'https://efurmsolution.com/',
+    shot: 'site-efurm',
+    summary:
+      'Research-support site with animated stat counters, a lightbox gallery, sliders and a PHP enquiry form.',
+    tech: ['Bootstrap 5', 'AOS', 'Swiper', 'GLightbox', 'PureCounter', 'PHP'],
   },
 ];
 
 // Add real dates and bullet points where you have them.
 export const experience = [
   {
-   dates: 'Jun 2024 — Present', role: 'Software Developer', org: 'Cennest Technologies',
-    summary: 'Full-time · Remote. Building scalable, high-performance web and mobile applications with React, React Native and ASP.NET.',
+    dates: 'Jun 2024 — Present',
+    role: 'Software Developer',
+    org: 'Cennest Technologies',
+    summary:
+      'Full-time · Remote. Building scalable, high-performance web and mobile applications with React, React Native and ASP.NET.',
     points: [
       'Mountain Rose Herbs: React Native app developer. Created the UI for the storefront app (Expo, TypeScript, Redux Toolkit): shop, search, cart, wishlist, loyalty and checkout.',
       'KidCheck: fix client-raised front-end issues in the check-in app, reports and React app, and work on the ASP.NET application.',
       'Add offline storage with SQLite, push notifications and Firebase Analytics, and cover login, cart and wishlist flows with Jest and Maestro tests.',
-          ],
+    ],
   },
   {
-    dates: '2023 — 2024', role: 'Web Developer', org: 'Wikpolt Softwares',
-    summary: 'Based in Nagercoil. Built and shipped client websites for businesses and academic-services brands, from first layout to live launch.',
+    dates: '2023 — 2024',
+    role: 'Web Developer',
+    org: 'Wikpolt Softwares',
+    summary:
+      'Based in Nagercoil. Built and shipped client websites for businesses and academic-services brands, from first layout to live launch.',
     points: [
       'Delivered websites for Zonduo, Help for Thesis, Precise Global Technologies and eFurm Solution, plus the company site.',
       'Built responsive layouts, enquiry and booking forms, testimonial carousels and scroll animations.',
     ],
   },
   {
-     dates: 'Jun 2020 — Jun 2023', role: 'BE, Computer Science and Engineering', org: "Stella Mary's College of Engineering", university: 'Anna University', grade: 'CGPA 7.85',
-    summary: 'Bachelor of Engineering in Computer Science and Engineering, Anna University, with a CGPA of 7.85. The foundation I built on for full-stack web and mobile development.',
+    dates: 'Jun 2020 — Jun 2023',
+    role: 'BE, Computer Science and Engineering',
+    org: "Stella Mary's College of Engineering",
+    university: 'Anna University',
+    grade: 'CGPA 7.85',
+    summary:
+      'Bachelor of Engineering in Computer Science and Engineering, Anna University, with a CGPA of 7.85. The foundation I built on for full-stack web and mobile development.',
     points: [],
   },
 ];
