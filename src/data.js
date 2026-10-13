@@ -152,7 +152,6 @@ export const projects = [
 // here still show, after these, sorted by file name.
 export const gallery = [
   { file: '05-tea-hills', caption: 'Up in the tea hills' },
-  { file: '01-bike', caption: 'Weekend ride' },
   { file: '03-printed-shirt', caption: 'Sunny day out' },
   { file: '07-hilltop', caption: 'Hilltop break' },
   { file: '04-tea-hills-beanie', caption: 'Misty morning in the hills' },
